@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="../../favicon.ico">
+
+  <title>Pollstr</title>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+  <!-- Custom styles for this template -->
+  <link href="http://fonts.googleapis.com/css?family=Ubuntu+Mono|Ubuntu|Ubuntu+Condensed" rel="stylesheet" type="text/css">
+
+  <!-- d3.js -->
+  <script src="http://d3js.org/d3.v2.js" type="text/javascript" charset="utf-8"></script>
+
+  <body style="font-family:Ubuntu">
+
+    <script>
+      var color = d3.scale.category10();
+
+      var canvas = d3.select("body").append("svg")
+        .attr("width", 1000)
+        .attr("height", 700);
+
+      d3.json(" /data/{{ date }}", function(data) {
+        var treemap = d3.layout.treemap()
+          .size([1000, 700])
+          .nodes(data)
+
+        var cells = canvas.selectAll(".cell")
+          .data(treemap)
+          .enter()
+          .append("g")
+          .attr("class", "cell")
+
+        cells.append("rect")
+          .attr("x", function(d) {
+            return d.x;
+          })
+          .attr("y", function(d) {
+            return d.y;
+          })
+          .attr("width", function(d) {
+            return d.dx;
+          })
+          .attr("height", function(d) {
+            return d.dy;
+          })
+          .attr("fill", function(d) {
+            return d.children ? null : color(d.parent.name);
+          })
+          .attr("stroke", "#fff")
+
+        cells.append("text")
+          .attr("x", function(d) {
+            return d.x + d.dx / 2
+          })
+          .attr("y", function(d) {
+            return d.y + d.dy / 2
+          })
+          .attr("text-anchor", "middle")
+          .text(function(d) {
+            return d.children ? null : d.name;
+          })
+
+        console.log(treemap);
+      })
+
+    </script>
+  </body>
+
+</html>
