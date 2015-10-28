@@ -24,15 +24,18 @@
   <body style="font-family:Ubuntu">
 
     <script>
+      var width = 1450,
+          height = 800;
+
       var color = d3.scale.category10();
 
       var canvas = d3.select("body").append("svg")
-        .attr("width", 1000)
-        .attr("height", 700);
+        .attr("width", width)
+        .attr("height", height);
 
       d3.json(" /data/{{ date }}", function(data) {
         var treemap = d3.layout.treemap()
-          .size([1000, 700])
+          .size([width, height])
           .nodes(data)
 
         var cells = canvas.selectAll(".cell")
@@ -69,9 +72,7 @@
           .attr("text-anchor", "middle")
           .text(function(d) {
             return d.children ? null : d.name;
-          })
-
-        console.log(treemap);
+          });
       })
 
     </script>

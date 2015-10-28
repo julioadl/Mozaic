@@ -19,18 +19,18 @@ def get_data_from_date(date):
     json_file = {}
     open_s3 = urllib.URLopener()
 
-    json_file['name'] = 'Noticias'
+    json_file['name'] = 'News'
 
-    #Medios Tradicionales
+    #Headlines
 
-    name_file = 'https://pollstr.s3.amazonaws.com/pollstr/Factico/JSON/printed-' + str(date) + '.json'
+    name_file = 'https://pollstr.s3.amazonaws.com/pollstr/News/headers-' + str(date) + '.json'
     cluster_file = open_s3.open(name_file)
     clusters = json.load(cluster_file)
     clusters = clusters['clusters']
 
-    medios_tradicionales = {}
+    headlines = {}
 
-    medios_tradicionales['name'] = "Medios Tradicionales"
+    headlines['name'] = "Headlines"
 
     children = []
     total_count = []
@@ -42,19 +42,19 @@ def get_data_from_date(date):
         children.append(child)
         total_count.append(clusters[topic]['count'])
 
-    medios_tradicionales['children'] = children
-    medios_tradicionales['value'] = np.sum(total_count)
+    headlines['children'] = children
+    headlines['value'] = np.sum(total_count)
 
-    #Medios Digitales
+    #MWorld
 
-    name_file = 'https://pollstr.s3.amazonaws.com/pollstr/Factico/JSON/digital-' + str(date) + '.json'
+    name_file = 'https://pollstr.s3.amazonaws.com/pollstr/News/world-' + str(date) + '.json'
     cluster_file = open_s3.open(name_file)
     clusters = json.load(cluster_file)
     clusters = clusters['clusters']
 
-    medios_digitales = {}
+    world = {}
 
-    medios_digitales['name'] = "Medios Digitales"
+    world['name'] = "World"
 
     children = []
     total_count = []
@@ -66,13 +66,37 @@ def get_data_from_date(date):
         children.append(child)
         total_count.append(clusters[topic]['count'])
 
-    medios_digitales['children'] = children
-    medios_digitales['value'] = np.sum(total_count)
+    world['children'] = children
+    world['value'] = np.sum(total_count)
+
+    #Politics
+
+    name_file = 'https://pollstr.s3.amazonaws.com/pollstr/News/politics-' + str(date) + '.json'
+    cluster_file = open_s3.open(name_file)
+    clusters = json.load(cluster_file)
+    clusters = clusters['clusters']
+
+    politics = {}
+
+    politics['name'] = "Politics"
+
+    children = []
+    total_count = []
+
+    for topic in clusters:
+        child = {}
+        child['name'] = clusters[topic]['topics']
+        child['value'] = clusters[topic]['count']
+        children.append(child)
+        total_count.append(clusters[topic]['count'])
+
+    politics['children'] = children
+    politics['value'] = np.sum(total_count)
 
     #Append two clusters to json
 
-    json_file['children'] = [medios_digitales, medios_tradicionales]
-    json_file['value'] = medios_digitales['value'] + medios_tradicionales['value']
+    json_file['children'] = [headlines, world, politics]
+    json_file['value'] = np.sum([headlines['value'], world['value'], politics['value']])
 
     json_file = json.dumps(json_file)
 
