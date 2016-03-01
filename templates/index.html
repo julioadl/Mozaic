@@ -1,81 +1,145 @@
 <!DOCTYPE html>
-
-<html lang="en">
+<html xmlns:xlink="https://www.w3.org/1999/xlink">
 
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <link rel="icon" href="../../favicon.ico">
-
-  <title>Pollstr</title>
-
-  <!-- Bootstrap core CSS -->
-  <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-
-  <!-- Custom styles for this template -->
-  <link href="http://fonts.googleapis.com/css?family=Ubuntu+Mono|Ubuntu|Ubuntu+Condensed" rel="stylesheet" type="text/css">
-
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--Import materialize.css-->
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/materialize.min.css')}}" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/stylesheet.css')}}" media="screen,projection" />
+  <!--Let browser know website is optimized for mobile-->
+  <link href='https://fonts.googleapis.com/css?family=Ubuntu:400,300,700' rel='stylesheet' type='text/css'>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!-- d3.js -->
-  <script src="http://d3js.org/d3.v2.js" type="text/javascript" charset="utf-8"></script>
+  <script src="https://d3js.org/d3.v2.js" type="text/javascript" charset="utf-8"></script>
+</head>
 
-  <body style="font-family:Ubuntu">
+<body>
+  <!--Import jQuery before materialize.js-->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/materialize.min.js')}}"></script>
 
-    <script>
-      var width = 1450,
-          height = 800;
+  <!-- Modals -->
+  <script>
+    $(document).ready(function() {
+      $('.modal-trigger').leanModal();
+      $('.scrollspy').scrollSpy();
+    });
+  </script>
+  <div class="navbar-fixed white">
+    <nav>
+      <div class="nav-wrapper white deep-purple-text text-darken-2">
+        <a href="#!" class="brand-logo center"><img src="{{ url_for('static', filename='img/logomozaic.png')}}" style="max-height:60px;"></a>
+        <ul class="right">
+          <li><a href="http://www.pollstr.io"><img src="{{ url_for('static', filename='img/pbpsolid.png')}}" style="max-height:60px;"></a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+  <div class="treeMap"></div>
+  {% for key, value in clusters.iteritems() %}
+  <div id="{{ key }}" class="container scrollspy">
+    <div class="card-panel">
+      <div class="row">
+        <div class="col s12 m4 deep-purple-text text-darken-4 hide-on-small-only">
+          {% for topic in value.topics %}
+            <h4 class="center" style="text-transform:uppercase;">{{ topic }}</h4>
+          {% endfor %}
+        </div>
+        <div class="col s12 m4 deep-purple-text text-darken-4 hide-on-med-and-up">
+          {% for topic in value.topics %}
+            <h5 class="center" style="text-transform:uppercase;">{{ topic }}</h5>
+          {% endfor %}
+        </div>
+        <div class="col s12 m8">
+          <ul>
+            {% for header in value.context %}
+            <li style="list-style-type:square;">{{ header }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
 
-      var color = d3.scale.category10();
 
-      var canvas = d3.select("body").append("svg")
-        .attr("width", width)
-        .attr("height", height);
+  <!-- treeMap -->
+  <script>
+    var width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 
-      d3.json(" /data/{{ date }}", function(data) {
-        var treemap = d3.layout.treemap()
-          .size([width, height])
-          .nodes(data)
+    var height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - 65;
 
-        var cells = canvas.selectAll(".cell")
-          .data(treemap)
-          .enter()
-          .append("g")
-          .attr("class", "cell")
+    var color = d3.scale.category20b();
 
-        cells.append("rect")
-          .attr("x", function(d) {
-            return d.x;
-          })
-          .attr("y", function(d) {
-            return d.y;
-          })
-          .attr("width", function(d) {
-            return d.dx;
-          })
-          .attr("height", function(d) {
-            return d.dy;
-          })
-          .attr("fill", function(d) {
-            return d.children ? null : color(d.parent.name);
-          })
-          .attr("stroke", "#fff")
+    var canvas = d3.select(".treeMap").append("svg")
+      .attr("width", width)
+      .attr("height", height);
 
+    d3.json("/data/{{ date }}", function(data) {
+      var treemap = d3.layout.treemap()
+        .size([width, height])
+        .nodes(data)
+
+      var cells = canvas.selectAll(".cell")
+        .data(treemap)
+        .enter()
+        .append("a")
+        .attr("class", "cell")
+        .attr("class", "modal-trigger")
+        .attr("xlink:href", function(d) {
+          return '#' + d.cluster;
+        })
+
+      cells.append("rect")
+        .attr("x", function(d) {
+          return d.x;
+        })
+        .attr("y", function(d) {
+          return d.y;
+        })
+        .attr("width", function(d) {
+          return d.dx;
+        })
+        .attr("height", function(d) {
+          return d.dy;
+        })
+        .attr("fill", function(d) {
+          return d.children ? null : color(d.parent.name);
+        })
+        .attr("stroke", "#fff")
+
+      for (i = 0; i < 5; i++) {
         cells.append("text")
+          .style("fill", "#BABABA")
           .attr("x", function(d) {
-            return d.x + d.dx / 2
+            return d.x + d.dx / 2;
           })
           .attr("y", function(d) {
-            return d.y + d.dy / 2
+            return d.y + ((i + 3) * d.dy) / 10;
           })
           .attr("text-anchor", "middle")
           .text(function(d) {
-            return d.children ? null : d.name;
-          });
-      })
+            return d.children ? null : d.name[i];
+          })
+      }
 
-    </script>
-  </body>
+      cells.append("text")
+        .style("fill", "#BABABA")
+        .attr("x", function(d) {
+          return d.x + 0.9 * d.dx;
+        })
+        .attr("y", function(d) {
+          return d.y + 0.1 * d.dy;
+        })
+        .attr("text-anchor", "middle")
+        .text(function(d) {
+          return d.children ? null : d.value;
+        })
+
+    })
+  </script>
+
+</body>
 
 </html>

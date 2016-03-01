@@ -1,0 +1,9 @@
+.indicator{
+    height: 20px;
+    width: 20px;
+    margin: auto;
+}
+
+body{
+    font-family: Ubuntu;
+}

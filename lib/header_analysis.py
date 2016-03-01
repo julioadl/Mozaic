@@ -24,7 +24,7 @@ def get_media():
 def pollstr_analysis(username, language, media):
 
     data_cluster = {'username': username, 'language': language}
-    data_to_analyze = {'data': data_cluster, 'text': media}
+    data_to_analyze = {'data': data_cluster, 'text': media, 'to_remove': []}
 
     data_to_analyze = json.dumps(data_to_analyze)
 

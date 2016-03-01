@@ -11,7 +11,34 @@ def index():
 
 @app.route('/<date>')
 def get_from_date(date):
-    return render_template('index.html', date=date)
+    open_s3 = urllib.URLopener()
+    headlines_name_file = 'https://pollstr.s3.amazonaws.com/pollstr/Datasets/Text/News/Headlines/US/headers-' + str(date) + '.json'
+    headlines_cluster_file = open_s3.open(headlines_name_file)
+    headlines_cluster_dict = json.loads(headlines_cluster_file.read())
+
+    world_name_file = 'https://pollstr.s3.amazonaws.com/pollstr/Datasets/Text/News/World/US/world-' + str(date) + '.json'
+    world_cluster_file = open_s3.open(world_name_file)
+    world_cluster_dict = json.loads(world_cluster_file.read())
+
+    politics_name_file = 'https://pollstr.s3.amazonaws.com/pollstr/Datasets/Text/News/Politics/US/politics-' + str(date) + '.json'
+    politics_cluster_file = open_s3.open(politics_name_file)
+    politics_cluster_dict = json.loads(politics_cluster_file.read())
+
+    clusters = {}
+
+    for topic in headlines_cluster_dict['clusters']:
+        tag = "headlines-" + str(topic)
+        clusters[tag] = headlines_cluster_dict['clusters'][topic]
+
+    for topic in world_cluster_dict['clusters']:
+        tag = "world-" + str(topic)
+        clusters[tag] = world_cluster_dict['clusters'][topic]
+
+    for topic in politics_cluster_dict['clusters']:
+        tag = "politics-" + str(topic)
+        clusters[tag] = politics_cluster_dict['clusters'][topic]
+
+    return render_template('index.html', date=date, clusters=clusters)
 
 @app.route('/data/<date>')
 def get_data_from_date(date):
@@ -23,7 +50,7 @@ def get_data_from_date(date):
 
     #Headlines
 
-    name_file = 'https://pollstr.s3.amazonaws.com/pollstr/News/headers-' + str(date) + '.json'
+    name_file = 'https://pollstr.s3.amazonaws.com/pollstr/Datasets/Text/News/Headlines/US/headers-' + str(date) + '.json'
     cluster_file = open_s3.open(name_file)
     clusters = json.load(cluster_file)
     clusters = clusters['clusters']
@@ -39,6 +66,7 @@ def get_data_from_date(date):
         child = {}
         child['name'] = clusters[topic]['topics']
         child['value'] = clusters[topic]['count']
+        child['cluster'] = 'headlines-' + str(topic)
         children.append(child)
         total_count.append(clusters[topic]['count'])
 
@@ -47,7 +75,7 @@ def get_data_from_date(date):
 
     #MWorld
 
-    name_file = 'https://pollstr.s3.amazonaws.com/pollstr/News/world-' + str(date) + '.json'
+    name_file = 'https://pollstr.s3.amazonaws.com/pollstr/Datasets/Text/News/World/US/world-' + str(date) + '.json'
     cluster_file = open_s3.open(name_file)
     clusters = json.load(cluster_file)
     clusters = clusters['clusters']
@@ -63,6 +91,7 @@ def get_data_from_date(date):
         child = {}
         child['name'] = clusters[topic]['topics']
         child['value'] = clusters[topic]['count']
+        child['cluster'] = 'world-' + str(topic)
         children.append(child)
         total_count.append(clusters[topic]['count'])
 
@@ -71,7 +100,7 @@ def get_data_from_date(date):
 
     #Politics
 
-    name_file = 'https://pollstr.s3.amazonaws.com/pollstr/News/politics-' + str(date) + '.json'
+    name_file = 'https://pollstr.s3.amazonaws.com/pollstr/Datasets/Text/News/Politics/US/politics-' + str(date) + '.json'
     cluster_file = open_s3.open(name_file)
     clusters = json.load(cluster_file)
     clusters = clusters['clusters']
@@ -87,6 +116,7 @@ def get_data_from_date(date):
         child = {}
         child['name'] = clusters[topic]['topics']
         child['value'] = clusters[topic]['count']
+        child['cluster'] = 'politics-' + str(topic)
         children.append(child)
         total_count.append(clusters[topic]['count'])
 
