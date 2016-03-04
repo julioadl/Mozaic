@@ -1,0 +1,7 @@
+datetime
+gunicorn
+Flask==0.10.1
+httplib2==0.8
+Jinja2==2.7.1
+numpy==1.8.0
+pytz

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:xlink="https://www.w3.org/1999/xlink">
+
+<head>
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--Import materialize.css-->
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/materialize.min.css')}}" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/stylesheet.css')}}" media="screen,projection" />
+  <!--Let browser know website is optimized for mobile-->
+  <link href='https://fonts.googleapis.com/css?family=Ubuntu:400,300,700' rel='stylesheet' type='text/css'>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- d3.js -->
+  <script src="https://d3js.org/d3.v2.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>
+  <!--Import jQuery before materialize.js-->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/materialize.min.js')}}"></script>
+  <div class="navbar-fixed white">
+    <nav>
+      <div class="nav-wrapper white deep-purple-text text-darken-2">
+        <a href="#!" class="brand-logo center"><img src="{{ url_for('static', filename='img/logomozaic.png')}}" style="max-height:60px;"></a>
+        <ul class="right">
+          <li><a href="http://www.pollstr.io"><img src="{{ url_for('static', filename='img/pbpsolid.png')}}" style="max-height:60px;"></a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+  <div class="container">
+    <img class="responsive-img" src="{{ url_for('static', filename='img/errormozaic.png')}}" style="margin-top:70px;">
+  </div>
+
+</html>

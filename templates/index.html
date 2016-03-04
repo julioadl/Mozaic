@@ -70,7 +70,8 @@
 
     var height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - 65;
 
-    var color = d3.scale.category20b();
+    var color = d3.scale.ordinal()
+      .range(['#662D91', '#8DC63F', '#23A8E1', '#E123A8']);
 
     var canvas = d3.select(".treeMap").append("svg")
       .attr("width", width)
@@ -111,7 +112,7 @@
 
       for (i = 0; i < 5; i++) {
         cells.append("text")
-          .style("fill", "#BABABA")
+          .style("fill", "white")
           .attr("x", function(d) {
             return d.x + d.dx / 2;
           })
@@ -125,7 +126,7 @@
       }
 
       cells.append("text")
-        .style("fill", "#BABABA")
+        .style("fill", "white")
         .attr("x", function(d) {
           return d.x + 0.9 * d.dx;
         })
