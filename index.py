@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return redirect('/2016-03-04')
+    return render_template('howto.html')
 
 @app.route('/<date>')
 def get_from_date(date):

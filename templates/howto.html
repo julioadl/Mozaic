@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:xlink="https://www.w3.org/1999/xlink">
+
+<head>
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--Import materialize.css-->
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/materialize.min.css')}}" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/stylesheet.css')}}" media="screen,projection" />
+  <!--Let browser know website is optimized for mobile-->
+  <link href='https://fonts.googleapis.com/css?family=Ubuntu:400,300,700' rel='stylesheet' type='text/css'>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- d3.js -->
+  <script src="https://d3js.org/d3.v2.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>
+  <!--Import jQuery before materialize.js-->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/materialize.min.js')}}"></script>
+
+  <div class="navbar-fixed white">
+    <nav>
+      <div class="nav-wrapper white deep-purple-text text-darken-2">
+        <a href="#!" class="brand-logo center">
+          <img src="{{ url_for('static', filename='img/logomozaic.png')}}" style="max-height:60px;">
+        </a>
+        <ul class="right">
+          <li>
+            <a href="http://www.pollstr.io">
+              <img src="{{ url_for('static', filename='img/pbpsolid.png')}}" style="max-height:60px;">
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+  <div class="container">
+    <ul class="collapsible popout" data-collapsible="accordion">
+      <li>
+        <div class="collapsible-header blue-text text-darken-3 active">
+          <h2 class="grey-text text-darken-2 center">What is
+            <img class="responsive-img" style="max-height:10rem; margin-bottom:-1.9rem;" src="{{ url_for('static', filename='img/logomozaic.png')}}">? </h2>
+        </div>
+        <div class="collapsible-body container grey-text text-darken-2" style="padding-bottom:20px;">
+          <p class="flow-text center grey-text text-darken-2">Moizac measures the popularity of published articles across several news websites.</p>
+          <p class="flow-text center grey-text text-darken-2">For example, take three newspapers:</p>
+          <div class="row">
+            <div class="col s4">
+              <img class="responsive-img" src="{{ url_for('static', filename='img/nytimes.svg')}}" />
+            </div>
+            <div class="col s4">
+              <img class="responsive-img" src="{{ url_for('static', filename='img/wsj.png')}}" />
+            </div>
+            <div class="col s4">
+              <img class="responsive-img" src="{{ url_for('static', filename='img/latimes.svg')}}" />
+            </div>
+          </div>
+          <p class="flow-text center grey-text text-darken-2">Powered by pollstr, mozaic gathers all the headers and compares them to each other to give a visual benchmark of the most popular headlines. </p>
+          <a href="/2016-03-04">
+            <img src="{{ url_for('static', filename='img/mozaic_example.png')}}" class="responsive-img" />
+          </a>
+          <p class="flow-text center grey-text text-darken-2">In this image, you can see an example of the header benchmark on March 4th, 2016 from the
+            <span class="white-text" style="background-color:#662D91">Hompage (purple)</span>,
+            <span class="white-text" style="background-color:#8DC63F">World (green)</span> and
+            <span class="white-text" style="background-color:#23A8E1">Politics (blue)</span> sections of the LA Times, NY Times and Wall Street Journal.</p>
+            <center>
+              <a class="btn btn-large #662D91 modal-trigger" href="/2016-03-04">Try it now!</a>
+            </center>
+          <h4 class="center grey-text text-darken-2">How to read this?</h4>
+          <a href="/2016-03-04">
+            <img class="responsive-img" src="{{ url_for('static', filename='img/howto.png')}}" />
+          </a>
+          <h4 class="center grey-text text-darken-2">Who can use it?</h4>
+          <div class="row">
+            <div class="col s12 m6 grey-text text-darken-2 card" style="min-height:585px;">
+              <i style="margin-bottom:-1.5rem;" class="center material-icons light-green-text large">domain</i>
+              <h5 class="center ">Back Office</h5>
+              <p class="flow-text">Editorial chiefs/directors could see in real time the most discussed news among their newspapers and/or their competitors. </p>
+              <p class="flow-text">Mozaic pulls and analyzes the information in seconds, and automatically ranks the most popular news. </p>
+            </div>
+            <div class="col s12 m6 grey-text text-darken-2 card" style="min-height:585px;">
+              <i class="material-icons blue-text large">face</i>
+              <h5 class="center ">End Users</h5>
+              <p class="flow-text">Mozaic can be used by the readers to browse around the most important news. Even when mozaic pulls the information from several different newspapers, it can direct the traffic to your website to find that particular the news article the reader
+                is interested on.</p>
+            </div>
+          </div>
+          <div class="center"><i class="material-icons deep-purple-text medium">monetization_on</i></div>
+          <h4 class="center grey-text text-darken-2">Pricing</h4>
+          <p class="flow-text center grey-text text-darken-2">The basic version of mozaic starts at $800 USD/mo with 12 sources (1 source = 1 section). An extra source adds $15USD/mo to the base price. </p>
+          <div class="center"><i class="material-icons pink-text medium">favorite</i></div>
+          <h4 class="center grey-text text-darken-2">Open Design</h4>
+          <p class="flow-text center grey-text text-darken-2">We’ve left a part of the code open for you to personalize it. Or we can do it for you for an additional cost.</p>
+          <p class="flow-text center grey-text text-darken-2">Write us an email at contact@pollstr.io for further information. </p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</body>
+
+</html>
